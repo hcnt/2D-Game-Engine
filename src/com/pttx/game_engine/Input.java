@@ -20,6 +20,28 @@ public class Input implements KeyListener,MouseListener,MouseMotionListener,Mous
     public int getMouseY() {
         return mouseY;
     }
+    public int getScroll() {
+        return scroll;
+    }
+
+    public  boolean isKeyDown(int keyCode){
+        return keys[keyCode];
+    }
+    public  boolean isKeyReleased(int keyCode){
+        return !keys[keyCode] && keysLast[keyCode];
+    }
+    public  boolean isKeyPressed(int keyCode){
+        return keys[keyCode] && !keysLast[keyCode];
+    }
+    public  boolean isButtonDown(int button){
+        return buttons[button];
+    }
+    public  boolean isButtonReleased(int button){
+        return !buttons[button] && buttonsLast[button];
+    }
+    public  boolean isButtonPressed(int button){
+        return buttons[button] && !buttonsLast[button];
+    }
 
     public Input(Game game){
         this.game = game;
@@ -85,7 +107,8 @@ public class Input implements KeyListener,MouseListener,MouseMotionListener,Mous
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-
+        mouseX = (int)((mouseEvent.getX())/game.getScale());
+        mouseY = (int)((mouseEvent.getY())/game.getScale());
     }
 
     @Override
@@ -96,6 +119,6 @@ public class Input implements KeyListener,MouseListener,MouseMotionListener,Mous
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
-
+        scroll = mouseWheelEvent.getWheelRotation();
     }
 }

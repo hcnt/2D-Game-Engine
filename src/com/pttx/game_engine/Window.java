@@ -30,6 +30,7 @@ public class Window {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
+        canvas.requestFocusInWindow();
 
         canvas.createBufferStrategy(2);
         bs = canvas.getBufferStrategy();
@@ -39,6 +40,10 @@ public class Window {
     public void update(){
         g.drawImage(image,0,0,canvas.getWidth(),canvas.getHeight(),null);
         bs.show();
+    }
+
+    public JFrame getFrame() {
+        return frame;
     }
 
     public BufferedImage getImage() {
