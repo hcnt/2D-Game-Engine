@@ -5,8 +5,8 @@ public class GameContainer implements Runnable {
     private boolean running = false;
     private final double FRAMES_PER_SECOND = 60D/1000000000D;
 
-    private  int width = 320, height = 240;
-    private float scale = 4f;
+    private  int width = 512, height = 512;
+    private float scale = 2f;
     private String title = "My game";
 
     private Window window;
@@ -30,11 +30,14 @@ public class GameContainer implements Runnable {
         running = false;
     }
     public void render(){
-       // renderer.clear();
-        //aaaaaaaaaaaawindow.update();
+        renderer.clear();
+        game.render(this,renderer);
+        window.update();
+
+    }
+    public  void update(){
         game.update(this,FRAMES_PER_SECOND); //u sure u want to pass this?
-
-
+        input.update();
     }
 
     @Override
@@ -52,8 +55,8 @@ public class GameContainer implements Runnable {
             lastTime = currentTime;
             while (numberOfFramesToRun >= 1){
                 numberOfFramesToRun--;
+                update();
                 render();
-                input.update();
             }
 
             //fps counter
