@@ -1,8 +1,6 @@
 package com.pttx.game_engine;
 
-import java.awt.event.MouseEvent;
-
-public class Game implements Runnable {
+public class GameContainer implements Runnable {
     private Thread thread;
     private boolean running = false;
     private final double FRAMES_PER_SECOND = 60D/1000000000D;
@@ -13,33 +11,30 @@ public class Game implements Runnable {
 
     private Window window;
     private Renderer renderer;
-    private  Input input;
+    private Input input;
+    private AbstractGame game;
 
-    public Game(){
-
+    public GameContainer(AbstractGame game){
+        this.game = game;
     }
 
     public void start(){
         running = true;
         window = new Window(this);
         renderer = new Renderer(this);
-        thread = new Thread(this);
         input = new Input(this);
+        thread = new Thread(this);
         thread.run();
     }
     public void stop(){
         running = false;
     }
     public void render(){
-        window.update();
-    }
-    public void update(){
-        renderer.clear();
+       // renderer.clear();
+        //aaaaaaaaaaaawindow.update();
+        game.update(this,FRAMES_PER_SECOND); //u sure u want to pass this?
 
-        if(input.isButtonPressed(MouseEvent.BUTTON1)){
-            System.out.println("haha");
-        }
-        input.update();
+
     }
 
     @Override
@@ -57,8 +52,8 @@ public class Game implements Runnable {
             lastTime = currentTime;
             while (numberOfFramesToRun >= 1){
                 numberOfFramesToRun--;
-                update();
                 render();
+                input.update();
             }
 
             //fps counter
@@ -92,9 +87,10 @@ public class Game implements Runnable {
     }
     public String getTitle() { return title;
     }
-    public void setTitle(String title) { this.title = title;
-    }
     public Window getWindow() {
         return window;
+    }
+    public Input getInput() {
+        return input;
     }
 }

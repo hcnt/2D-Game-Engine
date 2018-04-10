@@ -3,7 +3,7 @@ package com.pttx.game_engine;
 import java.awt.event.*;
 
 public class Input implements KeyListener,MouseListener,MouseMotionListener,MouseWheelListener{
-    private Game game;
+    private GameContainer gameContainer;
 
     private boolean[] keys = new boolean[256];
     private boolean[] keysLast = new boolean[256];
@@ -43,19 +43,21 @@ public class Input implements KeyListener,MouseListener,MouseMotionListener,Mous
         return buttons[button] && !buttonsLast[button];
     }
 
-    public Input(Game game){
-        this.game = game;
+    public Input(GameContainer gameContainer){
+        this.gameContainer = gameContainer;
         mouseX = 0;
         mouseY = 0;
         scroll =0;
 
-        game.getWindow().getCanvas().addKeyListener(this);
-        game.getWindow().getCanvas().addMouseListener(this);
-        game.getWindow().getCanvas().addMouseMotionListener(this);
-        game.getWindow().getCanvas().addMouseWheelListener(this);
+        gameContainer.getWindow().getCanvas().addKeyListener(this);
+        gameContainer.getWindow().getCanvas().addMouseListener(this);
+        gameContainer.getWindow().getCanvas().addMouseMotionListener(this);
+        gameContainer.getWindow().getCanvas().addMouseWheelListener(this);
     }
 
     public void update(){
+        scroll = 0;
+
         for(int i=0;i<keys.length;i++){
             keysLast[i] = keys[i];
         }
@@ -107,14 +109,14 @@ public class Input implements KeyListener,MouseListener,MouseMotionListener,Mous
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-        mouseX = (int)((mouseEvent.getX())/game.getScale());
-        mouseY = (int)((mouseEvent.getY())/game.getScale());
+        mouseX = (int)((mouseEvent.getX())/ gameContainer.getScale());
+        mouseY = (int)((mouseEvent.getY())/ gameContainer.getScale());
     }
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
-        mouseX = (int)((mouseEvent.getX())/game.getScale());
-        mouseY = (int)((mouseEvent.getY())/game.getScale());
+        mouseX = (int)((mouseEvent.getX())/ gameContainer.getScale());
+        mouseY = (int)((mouseEvent.getY())/ gameContainer.getScale());
     }
 
     @Override

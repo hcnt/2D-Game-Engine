@@ -14,15 +14,15 @@ public class Window {
 
     private Graphics g;
 
-    public Window(Game game){
-        image = new BufferedImage(game.getWidth(),game.getHeight(),BufferedImage.TYPE_INT_RGB);
+    public Window(GameContainer gameContainer){
+        image = new BufferedImage(gameContainer.getWidth(), gameContainer.getHeight(),BufferedImage.TYPE_INT_RGB);
         canvas = new Canvas();
-        Dimension size = new Dimension((int)(game.getWidth()*game.getScale()),(int)(game.getHeight()*game.getScale()));
+        Dimension size = new Dimension((int)(gameContainer.getWidth()* gameContainer.getScale()),(int)(gameContainer.getHeight()* gameContainer.getScale()));
         canvas.setPreferredSize(size);
         canvas.setMinimumSize(size);
         canvas.setMaximumSize(size);
 
-        frame= new JFrame(game.getTitle());
+        frame= new JFrame(gameContainer.getTitle());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.add(canvas,BorderLayout.CENTER);
