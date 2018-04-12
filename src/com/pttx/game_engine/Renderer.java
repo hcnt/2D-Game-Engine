@@ -1,6 +1,7 @@
 package com.pttx.game_engine;
 
 import com.pttx.game_engine.gfx.Image;
+import com.pttx.game_engine.gfx.ImageTile;
 
 import java.awt.image.DataBufferInt;
 
@@ -17,7 +18,7 @@ public class Renderer {
 
     public void clear() {
         for (int i =0;i<pixels.length;i++) {
-            pixels[i] = 0;
+            pixels[i] = 0xffffffff;
         }
     }
 
@@ -29,10 +30,53 @@ public class Renderer {
 
     }
     public void drawImage(Image image, int offsetX, int offsetY){
-        for(int y=0;y<image.getHeight();y++){
-            for(int x = 0; x<image.getWidth(); x++){
+
+        int renderingX = 0;
+        int renderingY = 0;
+        int renderingWidth = image.getWidth();
+        int renderingHeight = image.getHeight();
+
+        if(renderingWidth + offsetX > pixelsWidth)
+            renderingWidth = pixelsWidth - offsetX;
+
+        if(renderingHeight + offsetY > pixelsHeight)
+            renderingHeight = pixelsHeight - offsetY;
+
+        if (offsetX < 0) renderingX -= offsetX;
+        if (offsetY < 0) renderingY -= offsetY;
+
+
+        for(int y=renderingY;y<renderingHeight;y++){
+            for(int x = renderingX; x<renderingWidth; x++){
                 renderPixel(x+ offsetX,y + offsetY,image.getPixels()[x+y*image.getWidth()]);
                 //renderPixel(0,0,0xffffffff);
+            }
+        }
+    }
+
+    public void drawTimageTile(ImageTile imageTile, int offsetX, int offsetY,int tileX,int tileY){
+        int renderingX = 0;
+        int renderingY = 0;
+        int renderingWidth = imageTile.getTileWidth();
+        int renderingHeight = imageTile.getTileWidth();
+
+        if(renderingWidth + offsetX > pixelsWidth)
+            renderingWidth = pixelsWidth - offsetX;
+
+        if(renderingHeight + offsetY > pixelsHeight)
+            renderingHeight = pixelsHeight - offsetY;
+
+        if (offsetX < 0) renderingX -= offsetX;
+        if (offsetY < 0) renderingY -= offsetY;
+
+
+        for(int y=renderingY;y<renderingHeight;y++){
+            for(int x = renderingX; x<renderingWidth; x++){
+                renderPixel(x + offsetX,
+                            y + offsetY,
+                            imageTile.getPixels()[
+                                    (x + tileX * imageTile.getTileWidth())
+                                  + (y + tileY * imageTile.getTileHeight()) * imageTile.getWidth()]);
             }
         }
     }

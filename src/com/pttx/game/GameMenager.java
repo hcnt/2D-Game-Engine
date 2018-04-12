@@ -4,14 +4,18 @@ import com.pttx.game_engine.AbstractGame;
 import com.pttx.game_engine.GameContainer;
 import com.pttx.game_engine.Renderer;
 import com.pttx.game_engine.gfx.Image;
+import com.pttx.game_engine.gfx.ImageTile;
 
 import java.awt.event.KeyEvent;
 
 public class GameMenager implements AbstractGame {
     private Image image;
+    private ImageTile animation;
+    private double animationCounter = 0;
 
     public GameMenager(){
-        image = new Image("/test.png");
+       // image = new Image("/test.png");
+        animation = new ImageTile("/xD.png",64,64);
     }
 
     @Override
@@ -19,10 +23,15 @@ public class GameMenager implements AbstractGame {
         if (gameContainer.getInput().isKeyReleased(KeyEvent.VK_A)){
             System.out.println("space");
         }
+
+        if (animationCounter>8) animationCounter = 0;
+        animationCounter+= 0.1;
     }
+
     @Override
     public void render(GameContainer g, Renderer r) {
-        r.drawImage(image,g.getInput().getMouseX(),g.getInput().getMouseY());
+        //r.drawImage(image,g.getInput().getMouseX()-10,g.getInput().getMouseY());
+        r.drawTimageTile(animation,g.getInput().getMouseX(),g.getInput().getMouseY(),(int)animationCounter,0);
     }
 
     public static void main(String[] args) {
