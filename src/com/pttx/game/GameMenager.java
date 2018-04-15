@@ -6,6 +6,7 @@ import com.pttx.game_engine.Renderer;
 import com.pttx.game_engine.gfx.Image;
 import com.pttx.game_engine.gfx.ImageTile;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class GameMenager implements AbstractGame {
@@ -20,18 +21,18 @@ public class GameMenager implements AbstractGame {
 
     @Override
     public void update(GameContainer gameContainer, double delta) {
-        if (gameContainer.getInput().isKeyReleased(KeyEvent.VK_A)){
+        if (gameContainer.getInput().isKeyReleased(KeyEvent.VK_A)) {
             System.out.println("space");
         }
 
-        if (animationCounter>8) animationCounter = 0;
-        animationCounter+= 0.1;
+        if (animationCounter > 8) animationCounter = 0;
+        animationCounter += 1;
     }
-
     @Override
     public void render(GameContainer g, Renderer r) {
         //r.drawImage(image,g.getInput().getMouseX()-10,g.getInput().getMouseY());
         r.drawTimageTile(animation,g.getInput().getMouseX(),g.getInput().getMouseY(),(int)animationCounter,0);
+        r.drawText("haha",10,10, 0xff000000);
     }
 
     public static void main(String[] args) {
