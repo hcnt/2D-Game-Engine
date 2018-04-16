@@ -31,14 +31,13 @@ public class GameMenager implements AbstractGame {
     @Override
     public void render(GameContainer g, Renderer r) {
         //r.drawImage(image,g.getInput().getMouseX()-10,g.getInput().getMouseY());
+        r.drawGrid(16,16,0xff436325);
         r.drawTimageTile(animation,g.getInput().getMouseX(),g.getInput().getMouseY(),(int)animationCounter,0);
-        r.drawText("haha",10,10, 0xff000000);
     }
 
     public static void main(String[] args) {
         GameMenager gm = new GameMenager();
         GameContainer game = new GameContainer(gm);
         game.start();
-
     }
 }

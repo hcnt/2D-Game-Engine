@@ -4,6 +4,7 @@ import com.pttx.game_engine.gfx.Font;
 import com.pttx.game_engine.gfx.Image;
 import com.pttx.game_engine.gfx.ImageTile;
 
+import java.awt.*;
 import java.awt.image.DataBufferInt;
 
 public class Renderer {
@@ -25,7 +26,7 @@ public class Renderer {
         }
     }
 
-    public void renderPixel (int x,int y, int value){
+    public void setPixel(int x, int y, int value){
         if((x <= 0 || x >= pixelsWidth || y<=0 || y>= pixelsHeight) || ((value >> 24) == 0x00)){
             return;
         }
@@ -51,8 +52,8 @@ public class Renderer {
 
         for(int y=renderingY;y<renderingHeight;y++){
             for(int x = renderingX; x<renderingWidth; x++){
-                renderPixel(x+ offsetX,y + offsetY,image.getPixels()[x+y*image.getWidth()]);
-                //renderPixel(0,0,0xffffffff);
+                setPixel(x+ offsetX,y + offsetY,image.getPixels()[x+y*image.getWidth()]);
+                //setPixel(0,0,0xffffffff);
             }
         }
     }
@@ -67,7 +68,7 @@ public class Renderer {
                 for (int x=0; x<font.getWidths()[unicode];x++){
 
                     if(fontImage.getPixels()[x+font.getOffsets()[unicode]+y*fontImage.getWidth()] == 0xffffffff){
-                        renderPixel(x+ offsetX+offset,y+offesetY,color);
+                        setPixel(x+ offsetX+offset,y+offesetY,color);
                     }
                 }
             }
@@ -75,6 +76,20 @@ public class Renderer {
         }
     }
 
+    public void drawGrid(int numberOfXTiles, int numberOfYTiles, int color){
+        int xTileWidth = pixelsWidth / numberOfXTiles;
+        int yTileWidth = pixelsHeight / numberOfYTiles;
+        for(int i =0; i<numberOfYTiles; i++){
+            for(int j =0; j< pixelsWidth;j++){
+                setPixel(j,i*yTileWidth,color);
+            }
+        }
+        for(int i =0; i<numberOfXTiles; i++){
+            for(int j =0; j< pixelsHeight;j++){
+                setPixel(i*xTileWidth,j,color);
+            }
+        }
+    }
     public void drawTimageTile(ImageTile imageTile, int offsetX, int offsetY,int tileX,int tileY){
         int renderingX = 0;
         int renderingY = 0;
@@ -93,7 +108,7 @@ public class Renderer {
 
         for(int y=renderingY;y<renderingHeight;y++){
             for(int x = renderingX; x<renderingWidth; x++){
-                renderPixel(x + offsetX,
+                setPixel(x + offsetX,
                             y + offsetY,
                             imageTile.getPixels()[
                                     (x + tileX * imageTile.getTileWidth())
