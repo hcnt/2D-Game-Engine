@@ -4,13 +4,13 @@ import com.pttx.game_engine.AbstractGame;
 import com.pttx.game_engine.GameContainer;
 import com.pttx.game_engine.Renderer;
 
+import java.util.ArrayList;
+
 public class Game implements AbstractGame {
-    private int GridNumber;
-    private Snake snake;
+    private int GridNumber= 16;
+    private Snake snake = new Snake(GridNumber);
 
     public Game(){
-        GridNumber = 16;
-        snake = new Snake(GridNumber);
     }
 
     @Override

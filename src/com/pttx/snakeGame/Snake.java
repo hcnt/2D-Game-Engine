@@ -62,7 +62,7 @@ public class Snake {
     public void drawSnake(Renderer r,int windowWidth){
         int componentSize = windowWidth / gridNumber;
         for(int i = 0; i<components.size(); i++){
-            r.drawImage(body,components.get(i).x*componentSize,components.get(i).y*componentSize);
+            components.get(i).drawComponent(r,body,componentSize);
         }
     }
 }
