@@ -5,8 +5,8 @@ public class GameContainer implements Runnable {
     private boolean running = false;
     private final double FRAMES_PER_SECOND = 60D/1000000000D;
 
-    private  int width = 512, height = 512;
-    private float scale = 2f;
+    private  int width = 1024, height = 1024;
+    private float scale = 1f;
     private String title = "My game";
 
     private Window window;

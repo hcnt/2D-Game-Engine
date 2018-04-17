@@ -15,7 +15,7 @@ public class Game implements AbstractGame {
 
     @Override
     public void update(GameContainer g, double delta) {
-
+        snake.updateSnake(g);
     }
 
     @Override
