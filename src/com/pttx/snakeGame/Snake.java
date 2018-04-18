@@ -11,11 +11,19 @@ public class Snake {
     private ArrayList<Component> components;
     private Component head;
     private Image body = new Image("/square.png");
-    private int xSpeed = 0;
-    private int ySpeed = 1;
     private long updateTimer = System.nanoTime();
     private int gridNumber;
     private boolean wasDirectionChanged = false;
+    Direction direction = Direction.DOWN;
+    public enum Direction{
+        UP(0,-1),DOWN(0,1),RIGHT(1,0),LEFT(-1,0);
+        int xSpeed;
+        int ySpeed;
+        Direction(int xSpeed, int ySpeed){
+            this.xSpeed = xSpeed;
+            this.ySpeed = ySpeed;
+        }
+    }
 
     public Snake(int gridNumber){
         this.gridNumber = gridNumber;
@@ -43,29 +51,25 @@ public class Snake {
                 components.get(i).x = components.get(i-1).x;
                 components.get(i).y = components.get(i-1).y;
             }
-            components.get(0).x += xSpeed;
-            components.get(0).y += ySpeed;
+            components.get(0).x += direction.xSpeed;
+            components.get(0).y += direction.ySpeed;
         }
     }
     public void changeDirection(GameContainer g){
-        if(g.getInput().isKeyDown(KeyEvent.VK_DOWN) && ySpeed != -1 && !wasDirectionChanged){
-            ySpeed = 1;
-            xSpeed = 0;
+        if(g.getInput().isKeyDown(KeyEvent.VK_DOWN) && direction != Direction.UP && !wasDirectionChanged){
+            direction = Direction.DOWN;
             wasDirectionChanged = true;
         }
-        if(g.getInput().isKeyDown(KeyEvent.VK_UP) && ySpeed != 1 && !wasDirectionChanged){
-            ySpeed = -1;
-            xSpeed = 0;
+        if(g.getInput().isKeyDown(KeyEvent.VK_UP) && direction != Direction.DOWN && !wasDirectionChanged){
+            direction = Direction.UP;
             wasDirectionChanged = true;
         }
-        if(g.getInput().isKeyDown(KeyEvent.VK_LEFT) && xSpeed != 1 && !wasDirectionChanged){
-            xSpeed = -1;
-            ySpeed = 0;
+        if(g.getInput().isKeyDown(KeyEvent.VK_LEFT) && direction != Direction.RIGHT && !wasDirectionChanged){
+            direction = Direction.LEFT;
             wasDirectionChanged = true;
         }
-        if(g.getInput().isKeyDown(KeyEvent.VK_RIGHT) && xSpeed != -1 && !wasDirectionChanged){
-            xSpeed = 1;
-            ySpeed = 0;
+        if(g.getInput().isKeyDown(KeyEvent.VK_RIGHT) && direction != Direction.LEFT && !wasDirectionChanged){
+            direction = Direction.RIGHT;
             wasDirectionChanged = true;
         }
     }
