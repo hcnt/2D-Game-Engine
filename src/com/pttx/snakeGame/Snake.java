@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Snake {
     private ArrayList<Component> components;
+    private Component head;
     private Image body = new Image("/square.png");
     private int xSpeed = 0;
     private int ySpeed = 1;
@@ -22,10 +23,19 @@ public class Snake {
         components.add(new Component(5,5));
         components.add(new Component(5,6));
         components.add(new Component(5,7));
+        head = components.get(0);
     }
+
+    public ArrayList<Component> getComponents() {
+        return components;
+    }
+    public Component getHead() {
+        return head;
+    }
+
     public void updateSnake(GameContainer g){
         changeDirection(g);
-        if (System.nanoTime() - updateTimer > 100000000) {
+        if (System.nanoTime() - updateTimer > 300000000) {
             wasDirectionChanged = false;
             updateTimer = System.nanoTime();
             System.out.println(components.size());
