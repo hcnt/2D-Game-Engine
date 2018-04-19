@@ -11,10 +11,12 @@ public class Snake {
     private ArrayList<Component> components;
     private Component head;
     private Image body = new Image("/square.png");
+    private Image headImage = new Image("/redSquare.png");
     private long updateTimer = System.nanoTime();
     private int gridNumber;
     private boolean wasDirectionChanged = false;
     private ArrayList<Direction> directions = new ArrayList<>();
+    private int deltaTime = 180000000;
 
     public enum Direction{
         UP(0,-1),DOWN(0,1),RIGHT(1,0),LEFT(-1,0);
@@ -45,7 +47,7 @@ public class Snake {
 
     public void updateSnake(GameContainer g){
         changeDirection(g);
-        if (System.nanoTime() - updateTimer > 180000000) {
+        if (System.nanoTime() - updateTimer > deltaTime) {
             updateTimer = System.nanoTime();
             System.out.println(components.size());
             for (int i = components.size()-1; i>=1; i--) {
@@ -81,5 +83,11 @@ public class Snake {
         for(int i = 0; i<components.size(); i++){
             components.get(i).drawComponent(r,body,componentSize);
         }
+        renderSnakeHead(r,componentSize,head.x,head.y,directions.get(0),System.nanoTime() - updateTimer);
+    }
+    public void renderSnakeHead(Renderer r, int componentSize, int x, int y, Direction direction, long timePassed) {
+        float xOffset = (x * componentSize + ((direction.xSpeed * (timePassed / (float)deltaTime))*componentSize));
+        float yOffset = (y * componentSize + ((direction.ySpeed * (timePassed / (float)deltaTime))*componentSize));
+        r.drawImage(headImage, (int)xOffset, (int)yOffset);
     }
 }
