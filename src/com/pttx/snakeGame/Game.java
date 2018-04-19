@@ -37,8 +37,11 @@ public class Game implements AbstractGame {
     public void checkForCollision(GameContainer g){
         for(int i = 0; i<items.size();i++){
             if (items.get(i).x == snake.getHead().x && items.get(i).y == snake.getHead().y){
-                snake.getComponents().add(new Component(snake.getComponents().get(1).x,snake.getComponents().get(1).y));
+                Component newComponent = new Component(snake.getComponents().get(snake.getComponents().size()-1).x - snake.getDirectionsOfBody().get(0).xSpeed,
+                                                       snake.getComponents().get(snake.getComponents().size()-1).y - snake.getDirectionsOfBody().get(0).ySpeed);
+                snake.setTail(newComponent);
                 items.remove(i);
+                snake.getComponents().add(newComponent);
             }
         }
         for(int i = 2; i<snake.getComponents().size();i++){
