@@ -30,8 +30,8 @@ public class Snake {
         this.gridNumber = gridNumber;
         components = new ArrayList<>();
         components.add(new Component(5,5));
-        components.add(new Component(5,6));
-        components.add(new Component(5,7));
+        components.add(new Component(5,4));
+        components.add(new Component(5,3));
         head = components.get(0);
         directions.add(Direction.DOWN);
     }

@@ -21,7 +21,7 @@ public class Game implements AbstractGame {
         checkForCollision(g);
         snake.updateSnake(g);
         if (items.size() < 1){
-            items.add(new ItemComponent((int)(Math.random()*gridNumber),(int)(Math.random()*gridNumber)));
+            addItemComponent();
         }
     }
 
@@ -41,15 +41,34 @@ public class Game implements AbstractGame {
                 items.remove(i);
             }
         }
-        for(int i = 1; i<snake.getComponents().size();i++){
-            //if(snake.getHead().x == snake.getComponents().get(i).x && snake.getHead().y == snake.getComponents().get(i).y){
-             //   g.stop();
-            //}
+        for(int i = 2; i<snake.getComponents().size();i++){
+            if(snake.getHead().x == snake.getComponents().get(i).x && snake.getHead().y == snake.getComponents().get(i).y){
+                g.stop();
+            }
         }
         if(snake.getHead().x < 0 || snake.getHead().y < 0 || snake.getHead().x > gridNumber-1 || snake.getHead().y > gridNumber-1){
-            g.stop();
+           g.stop();
         }
 
+    }
+    private boolean isItemValidToAdd(int x,int y){
+        for (int i = 0; i< snake.getComponents().size(); i++){
+            if(snake.getComponents().get(i).x == x && snake.getComponents().get(i).y == y){
+               return false;
+            }
+        }
+        return true;
+    }
+
+    public void addItemComponent(){
+        int x = (int)(Math.random()*gridNumber);
+        int y = (int)(Math.random()*gridNumber);
+
+        while (!isItemValidToAdd(x,y)){
+            x = (int)(Math.random()*gridNumber);
+            y = (int)(Math.random()*gridNumber);
+        }
+        items.add(new ItemComponent(x,y));
     }
 
     public static void main(String[] args) {
