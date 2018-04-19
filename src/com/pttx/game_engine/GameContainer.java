@@ -55,9 +55,9 @@ public class GameContainer implements Runnable {
             lastTime = currentTime;
             while (numberOfFramesToRun >= 1){
                 numberOfFramesToRun--;
-                update();
                 render();
             }
+            update();
 
             //fps counter
 //            fps_counter++;
