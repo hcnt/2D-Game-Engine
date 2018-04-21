@@ -46,7 +46,7 @@ public class GameContainer implements Runnable {
         double numberOfFramesToRun = 0;
 
         double fps_counter = 0;
-        double fpsa_lastTime = System.currentTimeMillis();
+        double fps_lastTime = System.currentTimeMillis();
 
         while (running){
             double fps_currentTime = System.currentTimeMillis();
@@ -56,16 +56,17 @@ public class GameContainer implements Runnable {
             while (numberOfFramesToRun >= 1){
                 numberOfFramesToRun--;
                 render();
+                //fps_counter++;
             }
             update();
 
-            //fps counter
-//            fps_counter++;
-//            if(fps_currentTime - fps_lastTime >= 1000){
-//                System.out.println("FPS: "+ fps_counter);
-//                fps_counter=0;
-//                fps_lastTime = fps_currentTime;
-//            }
+
+
+            if(fps_currentTime - fps_lastTime >= 1000){
+                System.out.println("FPS: "+ fps_counter);
+                fps_counter=0;
+                fps_lastTime = fps_currentTime;
+            }
         }
     }
 

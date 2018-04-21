@@ -3,6 +3,7 @@ package com.pttx.snakeGame;
 import com.pttx.game_engine.GameContainer;
 import com.pttx.game_engine.Renderer;
 import com.pttx.game_engine.gfx.Image;
+import com.pttx.game_engine.gfx.ImageTile;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ public class Snake {
     private ArrayList<Component> components;
     private Component head;
     private Component tail;
-    private Image body = new Image("/square.png");
-    private Image headImage = new Image("/redSquare.png");
+    private ImageTile body = new ImageTile("/body.png",64,64);
+    private Image headImage = new Image("/square.png");
     private long updateTimer = System.nanoTime();
     private int gridNumber;
     private boolean wasDirectionChanged = false;
@@ -100,11 +101,16 @@ public class Snake {
     }
     public void drawSnake(Renderer r,int windowWidth){
         int componentSize = windowWidth / gridNumber;
-        for(int i = 0; i<components.size()-1; i++){
-            components.get(i).drawComponent(r,body,componentSize);
+        int xSpeed;
+        for(int i = 1; i<components.size()-1; i++){
+            xSpeed = Math.abs(directionsOfBody.get(components.size()-2-i).xSpeed);
+            components.get(i).drawComponentTile(r,body,componentSize,xSpeed,0);
+
         }
-        smoothRenderComponent(r,componentSize,body,tail.x,tail.y, directionsOfBody.get(0),System.nanoTime() - updateTimer,0);
-        smoothRenderComponent(r,componentSize,body,head.x,head.y, directionsOfHead.get(0),System.nanoTime() - updateTimer,2);
+        xSpeed = Math.abs(directionsOfHead.get(0).xSpeed);
+        head.drawComponentTile(r, body, componentSize,xSpeed,0);
+        smoothRenderComponent(r,componentSize,headImage,tail.x,tail.y, directionsOfBody.get(0),System.nanoTime() - updateTimer,0);
+        smoothRenderComponent(r,componentSize,headImage,head.x,head.y, directionsOfHead.get(0),System.nanoTime() - updateTimer,2);
 
     }
     public void smoothRenderComponent(Renderer r, int componentSize, Image image, int x, int y, Direction direction, long timePassed,int offset) {

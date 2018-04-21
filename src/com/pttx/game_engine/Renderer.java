@@ -90,7 +90,7 @@ public class Renderer {
             }
         }
     }
-    public void drawTimageTile(ImageTile imageTile, int offsetX, int offsetY,int tileX,int tileY){
+    public void drawImageTile(ImageTile imageTile, int offsetX, int offsetY, int tileX, int tileY){
         int renderingX = 0;
         int renderingY = 0;
         int renderingWidth = imageTile.getTileWidth();
