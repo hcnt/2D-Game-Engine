@@ -18,7 +18,7 @@ public class Snake {
     private boolean wasDirectionChanged = false;
     private ArrayList<Direction> directionsOfHead = new ArrayList<>();
     private ArrayList<Direction> directionsOfBody = new ArrayList<>();
-    private int deltaTime = 180000000;
+    private int deltaTime = 166000000;
 
     public enum Direction{
         UP(0,-1),DOWN(0,1),RIGHT(1,0),LEFT(-1,0);
@@ -55,6 +55,9 @@ public class Snake {
     }
     public ArrayList<Direction> getDirectionsOfBody() {
         return directionsOfBody;
+    }
+    public ArrayList<Direction> getDirectionsOfHead() {
+        return directionsOfHead;
     }
 
     public void updateSnake(GameContainer g){
