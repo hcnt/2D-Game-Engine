@@ -19,7 +19,7 @@ public class Snake {
     private boolean wasDirectionChanged = false;
     private ArrayList<Direction> directionsOfHead = new ArrayList<>();
     private ArrayList<Direction> directionsOfBody = new ArrayList<>();
-    private int deltaTime = 1000000000;//166000000;
+    private int deltaTime = 166000000;
 
     public enum Direction{
         UP(0,-1),DOWN(0,1),RIGHT(1,0),LEFT(-1,0);
@@ -63,7 +63,7 @@ public class Snake {
 
     public void updateSnake(GameContainer g){
         changeDirection(g);
-        setComponentOnTurn();
+        setHeadOnTurn();
         if (System.nanoTime() - updateTimer > deltaTime) {
             updateTimer = System.nanoTime();
             for (int i = components.size()-1; i>=1; i--) {
@@ -113,33 +113,88 @@ public class Snake {
         int xSpeed;
             for (int i = 1; i < components.size() - 1; i++) {
                 if (components.get(i).isOnTurn()) {
-                    components.get(i).drawComponentTile(r, body, componentSize, 1, 1);
+                    drawComponentOnTurn(r,componentSize,i);
                 } else {
-                    xSpeed = Math.abs(directionsOfBody.get(components.size() - 2 - i).xSpeed);
-                    components.get(i).drawComponentTile(r, body, componentSize, xSpeed, 0);
+                    if (directionsOfBody.size() > components.size() - 3){ //preventing outOfBoundsException
+                        xSpeed = Math.abs(directionsOfBody.get(components.size() - 2 - i).xSpeed);
+                        components.get(i).drawComponentTile(r, body, componentSize, xSpeed, 0);
+                    }
                 }
             }
-            if (components.get(0).isOnTurn()) {
-                components.get(0).drawComponentTile(r, body, componentSize, 1, 1);
+            if (head.isOnTurn()) {
+                drawHeadOnTurn(r,componentSize);
             } else {
                 xSpeed = Math.abs(directionsOfHead.get(0).xSpeed);
                 head.drawComponentTile(r, body, componentSize, xSpeed, 0);
             }
-        smoothRenderComponent(r,componentSize,headImage,tail.x,tail.y, directionsOfBody.get(0),System.nanoTime() - updateTimer,0);
-        smoothRenderComponent(r,componentSize,headImage,head.x,head.y, directionsOfHead.get(0),System.nanoTime() - updateTimer,2);
+        smoothRenderComponent(r,componentSize,body,3,tail.x,tail.y, directionsOfBody.get(0),System.nanoTime() - updateTimer,0);
+        smoothRenderComponent(r,componentSize,body,2,head.x,head.y, directionsOfHead.get(0),System.nanoTime() - updateTimer,2);
     }
-    public void smoothRenderComponent(Renderer r, int componentSize, Image image, int x, int y, Direction direction, long timePassed,int offset) {
+    public void smoothRenderComponent(Renderer r, int componentSize, ImageTile image, int tileRow, int x, int y, Direction direction, long timePassed,int offset) {
         float xOffset = (x * componentSize + ((direction.xSpeed * (timePassed / (float)deltaTime))*componentSize) - direction.xSpeed*offset);
         float yOffset = (y * componentSize + ((direction.ySpeed * (timePassed / (float)deltaTime))*componentSize) - direction.ySpeed*offset);
-        r.drawImage(image, (int)xOffset, (int)yOffset);
+        if(direction == Direction.DOWN) {
+            r.drawImageTile(image, (int) xOffset, (int) yOffset,3,tileRow);
+        }
+        if(direction == Direction.LEFT) {
+            r.drawImageTile(image, (int) xOffset, (int) yOffset,2,tileRow);
+        }
+        if(direction == Direction.RIGHT) {
+            r.drawImageTile(image, (int) xOffset, (int) yOffset,0,tileRow);
+        }
+        if(direction == Direction.UP) {
+            r.drawImageTile(image, (int) xOffset, (int) yOffset,1,tileRow);
+        }
     }
-    public void setComponentOnTurn(){
+    public void setHeadOnTurn(){
         if(components.get(0).x + directionsOfHead.get(0).xSpeed != components.get(1).x && components.get(0).y + directionsOfHead.get(0).ySpeed != components.get(1).y){
             components.get(0).setOnTurn(true);
         }
     }
-    public void drawComponentOnTurn(int index){
+    public void drawHeadOnTurn(Renderer r, int componentSize){
+        if(head.x == components.get(1).x +1 && directionsOfHead.get(0).ySpeed == 1){
+            head.drawComponentTile(r, body, componentSize, 0, 1);
+        }
+        else if(head.x == components.get(1).x +1 && directionsOfHead.get(0).ySpeed == -1){
+            head.drawComponentTile(r, body, componentSize, 1, 1);
+        }
+        else if(head.x == components.get(1).x -1 && directionsOfHead.get(0).ySpeed == -1){
+            head.drawComponentTile(r, body, componentSize, 2, 1);
+        }
+        else if(head.x == components.get(1).x -1 && directionsOfHead.get(0).ySpeed == 1){
+            head.drawComponentTile(r, body, componentSize, 3, 1);
+        }
 
+        else if(head.y == components.get(1).y +1 && directionsOfHead.get(0).xSpeed == 1){
+            head.drawComponentTile(r, body, componentSize, 2, 1);
+        }
+        else if(head.y == components.get(1).y +1 && directionsOfHead.get(0).xSpeed == -1){
+            head.drawComponentTile(r, body, componentSize, 1, 1);
+        }
+        else if(head.y == components.get(1).y -1 && directionsOfHead.get(0).xSpeed == -1){
+            head.drawComponentTile(r, body, componentSize, 0, 1);
+        }
+        else if(head.y == components.get(1).y -1 && directionsOfHead.get(0).xSpeed == 1){
+            head.drawComponentTile(r, body, componentSize, 3, 1);
+        }
+    }
+    public void drawComponentOnTurn(Renderer r, int componentSize, int index){
+        if(components.get(index+1).y == components.get(index).y+1 && components.get(index-1).x == components.get(index).x-1 ||
+           components.get(index-1).y == components.get(index).y+1 && components.get(index+1).x == components.get(index).x-1){
+            components.get(index).drawComponentTile(r, body, componentSize, 0, 1);
+        }
+        if(components.get(index-1).y == components.get(index).y-1 && components.get(index+1).x == components.get(index).x-1 ||
+           components.get(index+1).y == components.get(index).y-1 && components.get(index-1).x == components.get(index).x-1){
+            components.get(index).drawComponentTile(r, body, componentSize, 1, 1);
+        }
+        if(components.get(index-1).y == components.get(index).y-1 && components.get(index+1).x == components.get(index).x+1 ||
+           components.get(index+1).y == components.get(index).y-1 && components.get(index-1).x == components.get(index).x+1){
+            components.get(index).drawComponentTile(r, body, componentSize, 2, 1);
+        }
+        if(components.get(index+1).y == components.get(index).y+1 && components.get(index-1).x == components.get(index).x+1 ||
+           components.get(index-1).y == components.get(index).y+1 && components.get(index+1).x == components.get(index).x+1){
+            components.get(index).drawComponentTile(r, body, componentSize, 3, 1);
+        }
     }
 
 
