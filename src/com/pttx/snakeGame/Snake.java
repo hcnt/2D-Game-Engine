@@ -9,9 +9,9 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class Snake {
-    private ArrayList<Component> components;
-    private Component head;
-    private Component tail;
+    private ArrayList<SnakeComponent> components;
+    private SnakeComponent head;
+    private SnakeComponent tail;
     private ImageTile body = new ImageTile("/body.png",64,64);
     private Image headImage = new Image("/square.png");
     private long updateTimer = System.nanoTime();
@@ -34,21 +34,21 @@ public class Snake {
     public Snake(int gridNumber){
         this.gridNumber = gridNumber;
         components = new ArrayList<>();
-        components.add(new Component(5,5));
-        components.add(new Component(5,4));
-        components.add(new Component(5,3));
+        components.add(new SnakeComponent(5,5));
+        components.add(new SnakeComponent(5,4));
+        components.add(new SnakeComponent(5,3));
         head = components.get(0);
         tail = components.get(components.size()-1);
         directionsOfHead.add(Direction.DOWN);
     }
 
-    public ArrayList<Component> getComponents() {
+    public ArrayList<SnakeComponent> getComponents() {
         return components;
     }
     public Component getHead() {
         return head;
     }
-    public void setTail(Component tail) {
+    public void setTail(SnakeComponent tail) {
         this.tail = tail;
     }
     public Component getTail() {

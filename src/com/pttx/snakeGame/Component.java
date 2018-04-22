@@ -8,7 +8,6 @@ public class Component {
     int x;
     int y;
 
-    public Component(){}
     public Component(int x,int y){
         this.x = x;
         this.y = y;
